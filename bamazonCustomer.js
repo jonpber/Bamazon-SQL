@@ -26,8 +26,8 @@ function customerPrompt(){
 	  if (error) throw error;
 		console.log("-----------------");
 		console.log("Items for sale are:")
-		for (var i = 0; i < 10; i++){
-			console.log(results[i].item_id + ". " + results[i].product_name);
+		for (var i = 0; i < results.length; i++){
+			console.log(results[i].item_id + ". " + results[i].product_name + " - " + results[i].price);
 		}
 		console.log("-----------------");
 
@@ -51,7 +51,7 @@ function customerPrompt(){
 	 				if (error) throw error;
 	 			});
 
-	 			var sql2 = "UPDATE products SET product_sales = " + JSON.stringify(results[parseInt(answers.itemID) - 1].product_sales + (results[parseInt(answers.itemID) - 1].price.toFixed(2) * parseInt(answers.itemQuantity))) + " WHERE item_id = " + answers.itemID;
+	 			var sql2 = "UPDATE products SET product_sales = " + JSON.stringify(results[parseInt(answers.itemID) - 1].product_sales + (results[parseInt(answers.itemID) - 1].price * parseInt(answers.itemQuantity))) + " WHERE item_id = " + answers.itemID;
 	  			connection.query(sql2, function (error, resul1) {
 	 				if (error) throw error;
 	 			});

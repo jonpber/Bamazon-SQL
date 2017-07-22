@@ -21,8 +21,6 @@ figlet("Bamazon", function(err, data){
 });
 
 
-
-
 function managerPrompt(){
 	inquirer.prompt([
 	{
