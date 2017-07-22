@@ -76,7 +76,7 @@ function managerPrompt(){
 
 					{
 						name: "itemQuantity",
-						message: "Please give the number of to increase item stock by: "
+						message: "Please give the number to increase item stock by: "
 					}
 					]).then(function(answers1){
 						var sql = "UPDATE products SET stock_quantity = " + JSON.stringify(results[parseInt(answers1.itemID) - 1].stock_quantity + parseInt(answers1.itemQuantity)) + " WHERE item_id = " + answers1.itemID;
