@@ -10,8 +10,6 @@ var connection = mysql.createConnection({
   database : 'bamazon'
 });
 
-connection.connect();
-
 figlet("Bamazon", function(err, data){
 	if (err) {
 		return console.log(err);
@@ -27,7 +25,7 @@ function customerPrompt(){
 		console.log("-----------------");
 		console.log("Items for sale are:")
 		for (var i = 0; i < results.length; i++){
-			console.log(results[i].item_id + ". " + results[i].product_name + " - " + results[i].price);
+			console.log(results[i].item_id + ". " + results[i].product_name + " - $" + results[i].price);
 		}
 		console.log("-----------------");
 
@@ -46,13 +44,27 @@ function customerPrompt(){
 	  			console.log("Your total cost is: $" + (results[parseInt(answers.itemID) - 1].price * parseInt(answers.itemQuantity)).toFixed(2));
 	  			console.log("Thanks for shopping with Bamazon!");
 
-	  			var sql = "UPDATE products SET stock_quantity = " + JSON.stringify(results[parseInt(answers.itemID) - 1].stock_quantity - parseInt(answers.itemQuantity)) + " WHERE item_id = " + answers.itemID;
-	  			connection.query(sql, function (error, resul1) {
+	  			connection.query("UPDATE products SET ? WHERE ?", [
+	  			{
+	  				stock_quantity: results[parseInt(answers.itemID) - 1].stock_quantity - parseInt(answers.itemQuantity)
+	  			},
+	  			{
+	  				item_id: answers.itemID
+	  			}
+
+	  				], function (error, resul1) {
 	 				if (error) throw error;
 	 			});
 
-	 			var sql2 = "UPDATE products SET product_sales = " + JSON.stringify(results[parseInt(answers.itemID) - 1].product_sales + (results[parseInt(answers.itemID) - 1].price * parseInt(answers.itemQuantity))) + " WHERE item_id = " + answers.itemID;
-	  			connection.query(sql2, function (error, resul1) {
+	  			connection.query("UPDATE products SET ? WHERE ?", [
+	  			{
+	  				product_sales: results[parseInt(answers.itemID) - 1].product_sales + (results[parseInt(answers.itemID) - 1].price * parseInt(answers.itemQuantity))
+	  			},
+	  			{
+	  				item_id: answers.itemID
+	  			}
+
+	  				], function (error, resul1) {
 	 				if (error) throw error;
 	 			});
 	  		}
@@ -81,5 +93,3 @@ function customerPrompt(){
 	  	})
 	});
 }
-
- 

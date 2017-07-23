@@ -121,10 +121,12 @@ function managerPrompt(){
 							message: "Please give the STOCK QUANTITY of the product: "
 						},
 						]).then(function(answers1){
-							var sql = "INSERT INTO products (product_name, department_name, price, stock_quantity) VALUES ('" 
-							+ answers1.itemName +  "', '" + answers1.itemDepartment + "', '" 
-							+ answers1.itemPrice + "', '" + answers1.itemQuantity + "')"; 
-				  			connection.query(sql, function (error, resul1) {
+				  			connection.query("INSERT INTO products (product_name, department_name, price, stock_quantity) VALUES (?, ?, ?, ?)", [
+				  				 answers1.itemName,
+				  				 answers1.itemDepartment,
+				  				 answers1.itemPrice,
+				  				 answers1.itemQuantity
+				  				], function (error, resul1) {
 				 				if (error) throw error;
 				 			});
 
@@ -139,4 +141,3 @@ function managerPrompt(){
 		}
 
 	});
-}

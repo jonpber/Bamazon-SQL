@@ -31,7 +31,11 @@ function supervisorPrompt(){
 	}
 		]).then(function(answers){
 			if(answers.superChoices === "View Product Sales by Department"){
-				var sql = "SELECT departments.department_id as ID, departments.department_name as Department, departments.over_head_costs as Over_Head_Costs, sum(products.product_sales) as Product_Sales, (sum(products.product_sales) - departments.over_head_costs) as total_profit FROM products RIGHT JOIN departments ON products.department_name=departments.department_name group by departments.department_name order by (departments.department_id) asc";
+				var sql = "SELECT departments.department_id as ID, departments.department_name as Department, " 
+				+ "departments.over_head_costs as Over_Head_Costs, sum(products.product_sales) as Product_Sales, "
+				+ "(sum(products.product_sales) - departments.over_head_costs) as total_profit FROM products RIGHT JOIN "
+				+ "departments ON products.department_name=departments.department_name group by departments.department_name "
+				+ "order by (departments.department_id) asc";
 	  			connection.query(sql, function (error, resul1, fields) {
 	 				if (error) throw error;
 
@@ -77,9 +81,10 @@ function supervisorPrompt(){
 					name: "newDeptoverhead"
 				}
 					]).then(function(answers2){
-						var sql = "INSERT INTO departments (department_name, over_head_costs) VALUES ('" 
-						+ answers2.newDept +  "', '" + answers2.newDeptoverhead + "')";
-			  			connection.query(sql, function (error, resul1) {
+			  			connection.query("INSERT INTO departments (department_name, over_head_costs) VALUES (?, ?)", [
+			  				answers2.newDept,
+			  				answers2.newDeptoverhead
+			  				], function (error, resul1) {
 			 				if (error) throw error;
 			 			});
 			 			
