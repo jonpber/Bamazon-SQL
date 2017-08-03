@@ -7,7 +7,7 @@ var mysql = require('mysql');
 var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
-  password : '******', //Local password commented out.
+  password : '******',
   database : 'bamazon'
 });
 
@@ -79,8 +79,11 @@ function managerPrompt(){
 						message: "Please give the number to increase item stock by: "
 					}
 					]).then(function(answers1){
-						var sql = "UPDATE products SET stock_quantity = " + JSON.stringify(results[parseInt(answers1.itemID) - 1].stock_quantity + parseInt(answers1.itemQuantity)) + " WHERE item_id = " + answers1.itemID;
-			  			connection.query(sql, function (error, resul1) {
+						var sql = "UPDATE products SET ? WHERE ?";
+			  			connection.query(sql, [
+			  				{stock_quantity: JSON.stringify(results[parseInt(answers1.itemID) - 1].stock_quantity + parseInt(answers1.itemQuantity))},
+			  				{item_id: answers1.itemID}
+			  				], function (error, resul1) {
 			 				if (error) throw error;
 			 			});
 
@@ -141,3 +144,4 @@ function managerPrompt(){
 		}
 
 	});
+}
